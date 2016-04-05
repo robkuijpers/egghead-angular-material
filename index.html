@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Angular and Material</title>
+    <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+    <link rel="stylesheet" href="app.css">
+  </head>
+  <body ng-app="MyApp" layout="column" ng-controller="UserController as ul">
+
+    <md-toolbar layout="row">
+        <md-button class="menu" hide-gt-sm ng-click="ul.toggleList()" aria-label='show user list'>
+            <md-icon md-svg-icon="menu" ></md-icon>
+        </md-button>
+        <h3>Angular Material Starter</h3>
+    </md-toolbar>
+
+     <div class=container layout="row" flex>
+       <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-4dp" md-component-id='left'>
+         <md-list ng-click='ul.toggleList()'>
+           <md-list-item ng-repeat="u in ul.users">
+             <md-button ng-click="ul.selectUser(u)">
+               <md-icon md-svg-src="{{u.avatar}}" class="avatar"></md-icon>
+               {{u.name}}
+             </md-button>
+           </md-list-item>
+         </md-list>
+       </md-sidenav>
+
+       <md-content flex id="content">
+         <md-icon md-svg-icon="{{ul.selected.avatar}}" class="avatar"></md-icon>
+         <h2>{{ul.selected.name}}</h2>
+         <p>{{ul.selected.content}}</p>
+         <md-button class="share" aria-label="Share" md-no-ink ng-click="ul.share(ul.selected)">
+           <md-icon md-svg-icon="share"></md-icon>
+         </md-button>
+       </md-content>
+
+     </div>
+  </body>
+  <script src="node_modules/angular/angular.min.js"></script>
+  <script src="node_modules/angular-animate/angular-animate.min.js"></script>
+  <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+  <script src="node_modules/angular-material/angular-material.min.js"></script>
+  <script src="UserService.js"></script>
+  <script src="UserController.js"></script>
+  <script src="Users.js"></script>
+  <script>
+    angular.module('MyApp', ['ngMaterial', 'users'])
+      .config(function($mdIconProvider, $mdThemingProvider) {
+        $mdIconProvider.defaultIconSet("./svg/avatars.svg", 128)
+        .icon("share", "./svg/share.svg", 24)
+        .icon("google_plus", "./svg/google_plus.svg", 512)
+        .icon("hangouts", ".svg/hangouts.svg", 512)
+        .icon("twitter", "./svg/twitter.svg", 512)
+        .icon("phone", "./svg/phone.svg", 512)
+        .icon("menu", "./svg/menu.svg", 512);
+
+        $mdThemingProvider.theme('default')
+                    .primaryPalette('brown')
+                    .accentPalette('red');
+      })
+      .run(function(){
+        console.log('MyApp is running.');
+      });
+  </script>
+</html>
